@@ -1,5 +1,6 @@
 <template>
   <div>
+    <head-navbar></head-navbar>
     <div class="container">
       <div class="row">
         <div class="col">
@@ -9,21 +10,40 @@
         </div>
       </div>
       <nuxt/>
-
-      <div>
-        <router-link class="btn btn-light" to="/">TOP</router-link>
-        <router-link class="btn btn-light" to="/serialize">IMPOT</router-link>
-      </div>
     </div>
   </div>
 </template>
 
 
 <script>
+  import HeadNavbar from '../components/Navbar.vue'
 
   export default {
+    async fetch ({ store, params, env }) {
+      return await Promise.resolve()
+    },
     mounted () {
-      this.$store.commit('RESTORE_SWAGGER')
+      console.log('fetch')
+      if (!this.$store.state.swagger.original) {
+        const key = this.$store.getters['swagger/storedKey']
+        let promise = null
+        if (key) {
+          console.log('import')
+          promise = this.$store.dispatch('swagger/IMPORT_WITH_KEY', key)
+        } else {
+          console.log('import failed')
+          promise = Promise.reject()
+        }
+        return promise.then(() => {
+//          this.$router.push('/home')
+        }).catch(() => {
+          this.$router.push('/')
+        })
+      }
+//      this.$store.commit('swagger/RESTORE_SWAGGER')
+    },
+    components: {
+      HeadNavbar
     },
     methods: {
     }

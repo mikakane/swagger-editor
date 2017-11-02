@@ -1,50 +1,41 @@
 <template>
   <section class="container">
-    <h2>path infomation</h2>
-
-    <p class="text-right">
-      <a href="" class="btn btn-light">add path</a>
-    </p>
-    <table class="table">
-      <thead>
-      <tr>
-        <th>path</th>
-        <th>method</th>
-        <th>summary</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="path in paths">
-        <td>{{path.pathname}}</td>
-        <td>{{path.method}}</td>
-        <td>{{path.summary}}</td>
-        <td><router-link :to="'/'+path.operationId + '/'"> > </router-link></td>
-      </tr>
-      </tbody>
-    </table>
-    <a href="" class="btn btn-light">piyo</a>
+    <div>
+      <h2>create new document</h2>
+      <a class="btn btn-light" @click="createNew">new</a>
+    </div>
+    <div>
+      <h2>load from swagger store</h2>
+      <input type="text" class="form-control" v-model="apiKey" >
+      <a class="btn btn-light" @click="importFromKey">new</a>
+    </div>
   </section>
 </template>
 
 <script>
   import Logo from '~/components/Logo.vue'
-  import FormPath from '~/components/Forms/Path.vue'
 
   export default {
-    components: {Logo, FormPath},
-    computed: {
-      paths () {
-        return this.$store.getters.paths
-      }
-    },
+    components: {Logo},
     data () {
       return {
+        apiKey: ''
       }
     },
     mounted () {
+      this.apiKey = this.$store.getters['swagger/storedKey']
     },
     methods: {
+      createNew () {
+        this.$store.dispatch('swagger/CREATE_NEW').then(() => {
+          this.$router.push('/home')
+        })
+      },
+      importFromKey () {
+        this.$store.dispatch('swagger/IMPORT_WITH_KEY', this.apiKey).then(() => {
+          this.$router.push('/home')
+        })
+      }
     }
   }
 </script>

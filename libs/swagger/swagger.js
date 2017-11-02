@@ -1,11 +1,8 @@
-class Swagger {
-  constructor (swagger) {
-    this.swagger = swagger
-  }
+import jsYaml from 'js-yaml'
 
-  paths () {
-    return this.swagger.paths
+export default {
+  toYaml (swagger) {
+    const yaml = jsYaml.safeDump(swagger)
+    return yaml
   }
 }
-
-export default Swagger

@@ -12,6 +12,9 @@ module.exports = {
       {rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css'}
     ]
   },
+  env: {
+    storedKey: '39e3pyratq'
+  },
   /*
   ** Customize the progress-bar color
   */
